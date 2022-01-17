@@ -128,24 +128,28 @@ void BeginPlay() //main game loop
     getline(std::cin, UserGuess);
     for (int i = 0; i <= WordToGuess.length(); i++)
     {
-        if (UserGuess == WordToGuess[i])
+        if (UserGuess = WordToGuess[i]) //i guess it doesn't work because WordToGuess is empty. Need to fix the variable problem first before completing the game loop. See line 124
             std::cout << UserGuess;
-    }
-
-    if (UserGuess == WordToGuess)
-    {
-        std::cout << "You won!";
-        Sleep(5000);
-        system("cls");
-        TitleDropEnd();
-    }
-
-    if (UserGuess != WordToGuess)
-    {
-        std::cout << "You lose!";
-        Sleep(5000);
-        system("cls");
-        TitleDropEnd();
+        else
+        {
+            if (UserGuess == WordToGuess)
+            {
+                std::cout << "You won!";
+                Sleep(5000);
+                system("cls");
+                TitleDropEnd();
+            }
+            else
+            {
+                if (UserGuess != WordToGuess)
+                {
+                    std::cout << "You lose!";
+                    Sleep(5000);
+                    system("cls");
+                    TitleDropEnd();
+                }
+            }
+        }
     }
 }
 
