@@ -1,21 +1,26 @@
 {
-    "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\Hostx64\\x64\\cl.exe",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": [
+        "E:\\ex\\c++\\complex projects",
+        "E:\\ex",
+        "C:\\Users\\Paul\\Desktop",
+        "C:\\Users\\Paul\\Documents\\GitHub\\vcpkg",
+        "C:\\DevTools\\vcpkg",
+        "E:/ex/mingw/MinGW/include/c++/9.2.0",
+        "E:/ex/mingw/MinGW/include/c++/9.2.0/x86_64-w64-mingw32",
+        "E:/ex/mingw/MinGW/include/c++/9.2.0/tr1",
+        "E:/ex/mingw/MinGW/x86_64-w64-mingw32/include"
+      ],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
+      "windowsSdkVersion": "10.0.19041.0",
+      "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.30.30705\\bin\\Hostx64\\x64\\cl.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "windows-msvc-x64",
+      "compilerArgs": []
+    }
+  ],
+  "version": 4
 }
