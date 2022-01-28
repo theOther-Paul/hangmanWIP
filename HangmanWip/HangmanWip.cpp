@@ -8,9 +8,8 @@
 #include <windows.h>
 #include <string.h>
 
-using namespace std;
-
 std::string TemporaryStrMemo;
+std::string CorrectStrMemo;
 
 void TitleDropBegin()
 {
@@ -52,7 +51,7 @@ int SmallTimer()
     Sleep(1000);
     while (counter >= 1)
     {
-        std::cout << "\rThe game will begin in: " << counter << flush;
+        std::cout << "\rThe game will begin in: " << counter << std::flush;
         Sleep(1000);
         counter--;
     }
@@ -77,11 +76,11 @@ void ShowRules()
 
 void GetValidWord() //will get a random word from the word file
 {
-    ifstream WordsFile;          //declaration of the input file
+    std::ifstream WordsFile;     //declaration of the input file
     WordsFile.open("words.txt"); //opening procedure
     std::string WordsContent;
     int WordsCounter = 0;
-    vector<std::string> a(2643); //to read content easier, using a vector with a counter is the best practice for now
+    std::vector<std::string> a(2643); //to read content easier, using a vector with a counter is the best practice for now
     if (WordsFile.is_open())
     {
         while (!WordsFile.eof()) //will make sure that the file is read in it's entirety
@@ -99,14 +98,15 @@ void GetValidWord() //will get a random word from the word file
     srand(time(0));
     int ValidWordPosition = rand() % WordsCounter;
     std::string ValidWord;
-    // TemporaryStrMemo = ValidWord; // if used in the begin play function will display the uncovered word. I'll use it as a band aid for finishing the loop
     ValidWord = a[ValidWordPosition];
+    CorrectStrMemo = ValidWord; //memorizes the valid word
+    //mask operation
     for (int i = 1; i < ValidWord.length() - 1; i++) //will show only the first and the last letters of the word
     {
         ValidWord[i] = '-';
     }
     std::cout << ValidWord;
-    TemporaryStrMemo = ValidWord;
+    TemporaryStrMemo = ValidWord; //memorizes the masked word to be used in the BeginPlay() function
 }
 
 int BeginPlay() //main game loop
@@ -121,18 +121,28 @@ int BeginPlay() //main game loop
     char UserGuess;
     std::cout << "\nGuess the letter : ";
     std::cin >> UserGuess;
-    for (int i = 1; i < WordToGuess.length() - 1; i++)
+    while (WordToGuess != CorrectStrMemo)
     {
-        if (WordToGuess[i] = UserGuess)
+        for (int i = 1; i < WordToGuess.length() - 1; i++)
         {
-            std::cout << "Correct guess! Keep going!";
-            // WordToGuess.push_back(UserGuess);
-            WordToGuess[i] = UserGuess;
-            std::cout << "\nUpdated word is: " << WordToGuess;
-            std::cout << "\nLives remaining: " << lives;
-            // break;
-            return -1;
+            if (WordToGuess[i] == UserGuess)
+            {
+                std::cout << "Correct guess! Keep going!";
+                WordToGuess[i] = UserGuess;
+                std::cout << "\nUpdated word is: " << WordToGuess;
+                std::cout << "\nLives remaining: " << lives;
+                i++;
+            }
+            else //need to change this statements to make them repeat as long as the while exit condition is true
+            {
+                std::cout << "Incorrect guess!" << std::endl;
+                lives--;
+                std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
+                return i;
+            }
         }
+        if (WordToGuess == CorrectStrMemo)
+            break;
     }
 }
 
