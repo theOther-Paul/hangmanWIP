@@ -99,6 +99,7 @@ void GetValidWord() //will get a random word from the word file
     srand(time(0));
     int ValidWordPosition = rand() % WordsCounter;
     std::string ValidWord;
+    // TemporaryStrMemo = ValidWord; // if used in the begin play function will display the uncovered word. I'll use it as a band aid for finishing the loop
     ValidWord = a[ValidWordPosition];
     for (int i = 1; i < ValidWord.length() - 1; i++) //will show only the first and the last letters of the word
     {
@@ -108,45 +109,31 @@ void GetValidWord() //will get a random word from the word file
     TemporaryStrMemo = ValidWord;
 }
 
-// {
-//     int lives = GetValidWord().length() + 3;
-//     if (true)
-//         lives--;
-//     if (lives == 0)
-//     {
-//         std::cout << "\n Game over!" << std::endl;
-//         Sleep(5000);
-//         system("cls");
-//         TitleDropEnd();
-//     }
-// }
-
-void FindAndReplaceAll(std::string &s, const std::string &search, const std::string &replace) //s-WordToGuess; search-UserGuess; replace - what needs to be replaced (will try with UserGuess)
-{
-    for (size_t pos = 0;; pos += replace.length())
-    {
-        // Locate the substd::string to replace
-        pos = s.find(search, pos);
-        if (pos == std::string::npos)
-            break;
-        // Replace by erasing and inserting
-        s.erase(pos, search.length());
-        s.insert(pos, replace);
-    }
-}
-
-void BeginPlay() //main game loop
+int BeginPlay() //main game loop
 {
     std::string WordToGuess;
     GetValidWord();
     WordToGuess = TemporaryStrMemo;
-    std::string UserGuess;
+    int lives = WordToGuess.length() / 2 + 3;
+    if (WordToGuess.length() < 4)
+        lives = 5;
+    std::cout << "\nYou have " << lives << " lives!";
+    char UserGuess;
     std::cout << "\nGuess the letter : ";
-    getline(cin, UserGuess); //until this point, all works as intended
-    //             std::cout << WordToGuess.replace(i, j, UserGuess);
-
-    // will try the find function and see if it does the job better
-    WordToGuess.find(UserGuess) != string::npos ? std::cout << WordToGuess << " Contains " << UserGuess << std::endl : std::cout << WordToGuess << " \nDoesn't contain " << UserGuess << std::endl;
+    std::cin >> UserGuess;
+    for (int i = 1; i < WordToGuess.length() - 1; i++)
+    {
+        if (WordToGuess[i] = UserGuess)
+        {
+            std::cout << "Correct guess! Keep going!";
+            // WordToGuess.push_back(UserGuess);
+            WordToGuess[i] = UserGuess;
+            std::cout << "\nUpdated word is: " << WordToGuess;
+            std::cout << "\nLives remaining: " << lives;
+            // break;
+            return -1;
+        }
+    }
 }
 
 int main()
