@@ -51,6 +51,32 @@ void TitleDropEnd() //need to improve this ascii screen to make it more readable
     std::cout << "--------------------------------------------------" << std::endl;
 }
 
+void LoseScreen()
+{
+    std::cout << "----------------------------------------------------------" << std::endl;
+    std::cout << "|#     #                                              ###|" << std::endl;
+    std::cout << "| #   #   ####  #    #    #       ####   ####  ###### ###|" << std::endl;
+    std::cout << "|  # #   #    # #    #    #      #    # #      #      ###|" << std::endl;
+    std::cout << "|   #    #    # #    #    #      #    #  ####  #####   # |" << std::endl;
+    std::cout << "|   #    #    # #    #    #      #    #      # #         |" << std::endl;
+    std::cout << "|   #    #    # #    #    #      #    # #    # #      ###|" << std::endl;
+    std::cout << "|   #     ####   ####     ######  ####   ####  ###### ###|" << std::endl;
+    std::cout << "----------------------------------------------------------" << std::endl;
+}
+
+void WinScreen()
+{
+    std::cout << "------------------------------------------------" << std::endl;
+    std::cout << "|#     #                  #     #          ### |" << std::endl;
+    std::cout << "| #   #   ####  #    #    #  #  # # #    # ### |" << std::endl;
+    std::cout << "|  # #   #    # #    #    #  #  # # ##   # ### |" << std::endl;
+    std::cout << "|   #    #    # #    #    #  #  # # # #  #  #  |" << std::endl;
+    std::cout << "|   #    #    # #    #    #  #  # # #  # #     |" << std::endl;
+    std::cout << "|   #    #    # #    #    #  #  # # #   ## ### |" << std::endl;
+    std::cout << "|   #     ####   ####      ## ##  # #    # ### |" << std::endl;
+    std::cout << "------------------------------------------------" << std::endl;
+}
+
 int SmallTimer()
 {
     int counter = 5; //amount of seconds
@@ -85,16 +111,9 @@ void GetValidWord() //will get a random word from the word file
     std::ifstream WordsFile;     //declaration of the input file
     WordsFile.open("words.txt"); //opening procedure
     std::string WordsContent;
-    //int WordsCounter = 0;
     std::vector<std::string> WordsFileData; //will store the contents of the words file
     if (WordsFile.is_open())
     {
-        // while (!WordsFile.eof()) //will make sure that the file is read in it's entirety
-        // {
-        //     WordsFile >> WordsContent; //contains the file content
-        //     a[WordsCounter] = WordsContent;
-        //     WordsCounter++;
-        // }
         while (WordsFile >> WordsContent)
         {
             WordsFileData.push_back(WordsContent); //optimisation purposes and overall a good practice
@@ -128,42 +147,41 @@ void BeginPlay() //main game loop
     GetValidWord();
     WordToGuess = TemporaryStrMemo;
     std::cout << WordToGuess << std::endl;
+
     int lives;
     if (WordToGuess.length() < 4)
         lives = 5;
     else
         lives = WordToGuess.length() / 2 + 3;
     std::cout << "\nYou have " << lives << " lives!";
+
     char UserGuess;
-    std::cout << "(" << CorrectStrMemo << ")";
 
     while (lives > 0 && WordToGuess != CorrectStrMemo)
     {
         std::cout << "\nGuess the letter : ";
         std::cin >> UserGuess;
-        for (size_t i = 1; i < WordToGuess.length() - 1; i++) //works fine for small words or 3 letter words, with 1 unknown one
+        bool correct = false; //the introduction of a bool variable helps in breaking the loops and assuring the correct behaviour of the program
+        for (size_t i = 1; i < CorrectStrMemo.length() - 1; i++)
         {
-            for (size_t j = 1; j < CorrectStrMemo.length() - 1; j++)
+            if (CorrectStrMemo[i] == UserGuess)
             {
-                if (lives > 0 && CorrectStrMemo[j] == UserGuess)
-                {
-                    std::cout << "\nCorrect guess! Keep going!";
-                    WordToGuess[i] = UserGuess;
-                    std::cout << "\nUpdated word is: " << WordToGuess;
-                    std::cout << "\nLives remaining: " << lives;
-                    break;
-                }
-
-                else
-                {
-                    std::cout << "\nIncorrect guess!" << std::endl;
-                    lives--;
-                    std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
-                    std::cout << " " << WordToGuess;
-                    break;
-                }
-                break;
+                correct = true;
+                WordToGuess[i] = UserGuess;
             }
+        }
+        if (correct)
+        {
+            std::cout << "\nCorrect guess! Keep going!";
+            std::cout << "\nUpdated word is: " << WordToGuess;
+            std::cout << "\nLives remaining: " << lives;
+        }
+        else
+        {
+            std::cout << "\nIncorrect guess!" << std::endl;
+            lives--;
+            std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
+            std::cout << " " << WordToGuess;
         }
 
         //conditions to break the while and display the end screeens
@@ -171,26 +189,38 @@ void BeginPlay() //main game loop
         {
             std::cout << std::endl
                       << "You won!";
+            Sleep(5000);
+            system("cls");
+            WinScreen();
             break;
         }
         else if (lives == 0)
         {
-            std::cout << "You have no lives left to play!" << std::endl //need to connect it with the win/lose screeens
-                      << "The game is over!";
-            Sleep(1000);
+            std::cout << "\nYou have no lives left to play!" << std::endl
+                      << "\nThe game is over!";
+            std::cout << "\nThe word was " << CorrectStrMemo;
+            Sleep(5000);
             system("cls");
-            TitleDropEnd();
+            LoseScreen();
+            break;
         }
     }
 }
 
 int main()
 {
-    // ShowRules();
-    // // Sleep(5000);
-    // std::cin.get();
-    // std::cout << std::endl;
-    // SmallTimer();
-    // system("cls");
+    TitleDropBegin();
+    Sleep(500);
+    SmallTimer();
+    std::cout << std::endl;
+    system("cls");
+    ShowRules();
+    Sleep(5000);
+    std::cout << std::endl;
+    SmallTimer();
+    system("cls");
     BeginPlay();
+    SmallTimer();
+    system("cls");
+    TitleDropEnd();
 }
