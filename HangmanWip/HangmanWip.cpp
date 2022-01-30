@@ -6,8 +6,9 @@
 #include <ctime>
 #include <chrono>
 #include <windows.h>
-#include <string.h>
+#include <string.h> //i don't think i need both string and string.h, but i'm keeping it anyway
 
+//global variables
 std::string TemporaryStrMemo;
 std::string CorrectStrMemo;
 
@@ -37,12 +38,17 @@ void TitleDropBegin()
     std::cout << "                                 `.__.                                                                          " << std::endl;
 }
 
-void TitleDropEnd()
+void TitleDropEnd() //need to improve this ascii screen to make it more readable
 {
-    std::cout << " 888888 88  88 888888     888888 88b 88 8888b.  d8b" << std::endl;
-    std::cout << "  88   88  88 88__       88__   88Yb88  8I  Yb Y8P " << std::endl;
-    std::cout << "  88   888888 88''       88''  88 Y88  8I  dY `''' " << std::endl;
-    std::cout << "  88   88  88 888888     888888 88  Y8 8888Y'  (8) " << std::endl;
+    std::cout << "--------------------------------------------------" << std::endl;
+    std::cout << "|#######                  ####### #     # ###### |" << std::endl;
+    std::cout << "|   #    #    # ######    #       ##    # #     #|" << std::endl;
+    std::cout << "|   #    #    # #         #       # #   # #     #|" << std::endl;
+    std::cout << "|   #    ###### #####     #####   #  #  # #     #|" << std::endl;
+    std::cout << "|   #    #    # #         #       #   # # #     #|" << std::endl;
+    std::cout << "|   #    #    # #         #       #    ## #     #|" << std::endl;
+    std::cout << "|   #    #    # ######    ####### #     # ###### |" << std::endl;
+    std::cout << "--------------------------------------------------" << std::endl;
 }
 
 int SmallTimer()
@@ -79,15 +85,19 @@ void GetValidWord() //will get a random word from the word file
     std::ifstream WordsFile;     //declaration of the input file
     WordsFile.open("words.txt"); //opening procedure
     std::string WordsContent;
-    int WordsCounter = 0;
-    std::vector<std::string> a(2643); //to read content easier, using a vector with a counter is the best practice for now
+    //int WordsCounter = 0;
+    std::vector<std::string> WordsFileData; //will store the contents of the words file
     if (WordsFile.is_open())
     {
-        while (!WordsFile.eof()) //will make sure that the file is read in it's entirety
+        // while (!WordsFile.eof()) //will make sure that the file is read in it's entirety
+        // {
+        //     WordsFile >> WordsContent; //contains the file content
+        //     a[WordsCounter] = WordsContent;
+        //     WordsCounter++;
+        // }
+        while (WordsFile >> WordsContent)
         {
-            WordsFile >> WordsContent; //contains the file content
-            a[WordsCounter] = WordsContent;
-            WordsCounter++;
+            WordsFileData.push_back(WordsContent); //optimisation purposes and overall a good practice
         }
     }
 
@@ -95,61 +105,90 @@ void GetValidWord() //will get a random word from the word file
         std::cout << "Error! File is inexistent or broken. Please make sure that you have the uncorrupted file to continue."; //will print out an error message if the file is missing or the file is broken in some way
 
     WordsFile.close();
+
+    //picking a random word from the file
     srand(time(0));
-    int ValidWordPosition = rand() % WordsCounter;
+    int ValidWordPosition = rand() % WordsFileData.size();
     std::string ValidWord;
-    ValidWord = a[ValidWordPosition];
-    CorrectStrMemo = ValidWord; //memorizes the valid word
+    ValidWord = WordsFileData[ValidWordPosition];
+    CorrectStrMemo = ValidWord; //memorizes the valid word to be used in the BeginPlay function and for testing purposes
+
     //mask operation
     for (int i = 1; i < ValidWord.length() - 1; i++) //will show only the first and the last letters of the word
     {
         ValidWord[i] = '-';
     }
-    std::cout << ValidWord;
+
     TemporaryStrMemo = ValidWord; //memorizes the masked word to be used in the BeginPlay() function
 }
 
-int BeginPlay() //main game loop
+void BeginPlay() //main game loop
 {
     std::string WordToGuess;
     GetValidWord();
     WordToGuess = TemporaryStrMemo;
-    int lives = WordToGuess.length() / 2 + 3;
+    std::cout << WordToGuess << std::endl;
+    int lives;
     if (WordToGuess.length() < 4)
         lives = 5;
+    else
+        lives = WordToGuess.length() / 2 + 3;
     std::cout << "\nYou have " << lives << " lives!";
     char UserGuess;
-    std::cout << "\nGuess the letter : ";
-    std::cin >> UserGuess;
-    while (WordToGuess != CorrectStrMemo)
+    std::cout << "(" << CorrectStrMemo << ")";
+
+    while (lives > 0 && WordToGuess != CorrectStrMemo)
     {
-        for (int i = 1; i < WordToGuess.length() - 1; i++)
+        std::cout << "\nGuess the letter : ";
+        std::cin >> UserGuess;
+        for (size_t i = 1; i < WordToGuess.length() - 1; i++) //works fine for small words or 3 letter words, with 1 unknown one
         {
-            if (WordToGuess[i] == UserGuess)
+            for (size_t j = 1; j < CorrectStrMemo.length() - 1; j++)
             {
-                std::cout << "Correct guess! Keep going!";
-                WordToGuess[i] = UserGuess;
-                std::cout << "\nUpdated word is: " << WordToGuess;
-                std::cout << "\nLives remaining: " << lives;
-                i++;
-            }
-            else //need to change this statements to make them repeat as long as the while exit condition is true
-            {
-                std::cout << "Incorrect guess!" << std::endl;
-                lives--;
-                std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
-                return i;
+                if (lives > 0 && CorrectStrMemo[j] == UserGuess)
+                {
+                    std::cout << "\nCorrect guess! Keep going!";
+                    WordToGuess[i] = UserGuess;
+                    std::cout << "\nUpdated word is: " << WordToGuess;
+                    std::cout << "\nLives remaining: " << lives;
+                    break;
+                }
+
+                else
+                {
+                    std::cout << "\nIncorrect guess!" << std::endl;
+                    lives--;
+                    std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
+                    std::cout << " " << WordToGuess;
+                    break;
+                }
+                break;
             }
         }
-        if (WordToGuess == CorrectStrMemo)
+
+        //conditions to break the while and display the end screeens
+        if (WordToGuess == CorrectStrMemo && lives > 0)
+        {
+            std::cout << std::endl
+                      << "You won!";
             break;
+        }
+        else if (lives == 0)
+        {
+            std::cout << "You have no lives left to play!" << std::endl //need to connect it with the win/lose screeens
+                      << "The game is over!";
+            Sleep(1000);
+            system("cls");
+            TitleDropEnd();
+        }
     }
 }
 
 int main()
 {
     // ShowRules();
-    // Sleep(5000);
+    // // Sleep(5000);
+    // std::cin.get();
     // std::cout << std::endl;
     // SmallTimer();
     // system("cls");
