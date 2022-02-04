@@ -14,67 +14,67 @@ std::string CorrectStrMemo;
 
 void TitleDropBegin()
 {
-    std::cout << "    _                                                                                    " << std::endl;
-    std::cout << "   ' )       )      )           /'                                                 /'    " << std::endl;
-    std::cout << "    /      _/      /          /'                                               --/'--    " << std::endl;
-    std::cout << "   /    _/~/    _/~____     /' ____     ____    ,__________     ____           /' ____   " << std::endl;
-    std::cout << "  /  _/~  /  _/~ /'    )  /' /'    )--/'    )--/'    )     )  /'    )        /' /'    )--" << std::endl;
-    std::cout << " /_/~    /_/~  /(___,/' /' /'       /'    /' /'    /'    /' /(___,/'       /' /'    /'   " << std::endl;
-    std::cout << "/~      /~    (________(__(___,/   (___,/' /'    /'    /(__(________      (__(___,/'     " << std::endl;
-    std::cout << "                                                                                         " << std::endl;
-    Sleep(5000);
-    std::cout << " ___                                                                                                            " << std::endl;
-    std::cout << "(   )                                                                                                           " << std::endl;
-    std::cout << " | | .-.     .---.   ___ .-.     .--.    ___ .-. .-.     .---.   ___ .-.       .--.      .-.      .-.      .-.  " << std::endl;
-    std::cout << " | |/   |   / .-, | (   )   |   /    '  (   )   '   :   / .-, : (   )   '     /    |   /    '   /    '   /    '" << std::endl;
-    std::cout << " |  .-. .  (__) ; |  |  .-. .  ;  ,-. '  |  .-.  .-. ; (__) ; |  |  .-. .    ;  ,-. ' |  .-. ; |  .-. ; |  .-. ;" << std::endl;
-    std::cout << " | |  | |    .'`  |  | |  | |  | |  | |  | |  | |  | |   .'`  |  | |  | |    | |  | | | |  | | | |  | | | |  | |" << std::endl;
-    std::cout << " | |  | |   / .'| |  | |  | |  | |  | |  | |  | |  | |  / .'| |  | |  | |    '  `-' | | |  | | | |  | | | |  | |" << std::endl;
-    std::cout << " | |  | |  | /  | |  | |  | |  | |  | |  | |  | |  | | | /  | |  | |  | |     `.__. | | |  | | | |  | | | |  | |" << std::endl;
-    std::cout << " | |  | |  ; |  ; |  | |  | |  | '  | |  | |  | |  | | ; |  ; |  | |  | |     ___ | | | '  | | | '  | | | '  | |" << std::endl;
-    std::cout << " | |  | |  ' `-'  |  | |  | |  '  `-' |  | |  | |  | | ' `-'  |  | |  | |    (   )' / '  `-' / '  `-' / '  `-' /" << std::endl;
-    std::cout << "(___)(___) `.__.'_. (___)(___)  `.__. | (___)(___)(___)`.__.'_. (___)(___)    `,__.'   `.__,'   `.__,'   `.__,' " << std::endl;
-    std::cout << "                                ( `-' ;                                                                         " << std::endl;
-    std::cout << "                                 `.__.                                                                          " << std::endl;
+    std::cout << "    _                                                                                    " << std::endl
+              << "   ' )       )      )           /'                                                 /'    " << std::endl
+              << "    /      _/      /          /'                                               --/'--    " << std::endl
+              << "   /    _/~/    _/~____     /' ____     ____    ,__________     ____           /' ____   " << std::endl
+              << "  /  _/~  /  _/~ /'    )  /' /'    )--/'    )--/'    )     )  /'    )        /' /'    )--" << std::endl
+              << " /_/~    /_/~  /(___,/' /' /'       /'    /' /'    /'    /' /(___,/'       /' /'    /'   " << std::endl
+              << "/~      /~    (________(__(___,/   (___,/' /'    /'    /(__(________      (__(___,/'     " << std::endl
+              << "                                                                                         " << std::endl;
+    Sleep(3000);
+    std::cout << " ___                                                                                                            " << std::endl
+              << "(   )                                                                                                           " << std::endl
+              << " | | .-.     .---.   ___ .-.     .--.    ___ .-. .-.     .---.   ___ .-.       .--.      .-.      .-.      .-.  " << std::endl
+              << " | |/   |   / .-, | (   )   |   /    '  (   )   '   :   / .-, : (   )   '     /    |   /    '   /    '   /    '" << std::endl
+              << " |  .-. .  (__) ; |  |  .-. .  ;  ,-. '  |  .-.  .-. ; (__) ; |  |  .-. .    ;  ,-. ' |  .-. ; |  .-. ; |  .-. ;" << std::endl
+              << " | |  | |    .'`  |  | |  | |  | |  | |  | |  | |  | |   .'`  |  | |  | |    | |  | | | |  | | | |  | | | |  | |" << std::endl
+              << " | |  | |   / .'| |  | |  | |  | |  | |  | |  | |  | |  / .'| |  | |  | |    '  `-' | | |  | | | |  | | | |  | |" << std::endl
+              << " | |  | |  | /  | |  | |  | |  | |  | |  | |  | |  | | | /  | |  | |  | |     `.__. | | |  | | | |  | | | |  | |" << std::endl
+              << " | |  | |  ; |  ; |  | |  | |  | '  | |  | |  | |  | | ; |  ; |  | |  | |     ___ | | | '  | | | '  | | | '  | |" << std::endl
+              << " | |  | |  ' `-'  |  | |  | |  '  `-' |  | |  | |  | | ' `-'  |  | |  | |    (   )' / '  `-' / '  `-' / '  `-' /" << std::endl
+              << "(___)(___) `.__.'_. (___)(___)  `.__. | (___)(___)(___)`.__.'_. (___)(___)    `,__.'   `.__,'   `.__,'   `.__,' " << std::endl
+              << "                                ( `-' ;                                                                         " << std::endl
+              << "                                 `.__.                                                                          " << std::endl;
 }
 
-void TitleDropEnd() //need to improve this ascii screen to make it more readable
+void TitleDropEnd()
 {
-    std::cout << "--------------------------------------------------" << std::endl;
-    std::cout << "|#######                  ####### #     # ###### |" << std::endl;
-    std::cout << "|   #    #    # ######    #       ##    # #     #|" << std::endl;
-    std::cout << "|   #    #    # #         #       # #   # #     #|" << std::endl;
-    std::cout << "|   #    ###### #####     #####   #  #  # #     #|" << std::endl;
-    std::cout << "|   #    #    # #         #       #   # # #     #|" << std::endl;
-    std::cout << "|   #    #    # #         #       #    ## #     #|" << std::endl;
-    std::cout << "|   #    #    # ######    ####### #     # ###### |" << std::endl;
-    std::cout << "--------------------------------------------------" << std::endl;
+    std::cout << "--------------------------------------------------" << std::endl
+              << "|#######                  ####### #     # ###### |" << std::endl
+              << "|   #    #    # ######    #       ##    # #     #|" << std::endl
+              << "|   #    #    # #         #       # #   # #     #|" << std::endl
+              << "|   #    ###### #####     #####   #  #  # #     #|" << std::endl
+              << "|   #    #    # #         #       #   # # #     #|" << std::endl
+              << "|   #    #    # #         #       #    ## #     #|" << std::endl
+              << "|   #    #    # ######    ####### #     # ###### |" << std::endl
+              << "--------------------------------------------------" << std::endl;
 }
 
 void LoseScreen()
 {
-    std::cout << "----------------------------------------------------------" << std::endl;
-    std::cout << "|#     #                                              ###|" << std::endl;
-    std::cout << "| #   #   ####  #    #    #       ####   ####  ###### ###|" << std::endl;
-    std::cout << "|  # #   #    # #    #    #      #    # #      #      ###|" << std::endl;
-    std::cout << "|   #    #    # #    #    #      #    #  ####  #####   # |" << std::endl;
-    std::cout << "|   #    #    # #    #    #      #    #      # #         |" << std::endl;
-    std::cout << "|   #    #    # #    #    #      #    # #    # #      ###|" << std::endl;
-    std::cout << "|   #     ####   ####     ######  ####   ####  ###### ###|" << std::endl;
-    std::cout << "----------------------------------------------------------" << std::endl;
+    std::cout << "----------------------------------------------------------" << std::endl
+              << "|#     #                                              ###|" << std::endl
+              << "| #   #   ####  #    #    #       ####   ####  ###### ###|" << std::endl
+              << "|  # #   #    # #    #    #      #    # #      #      ###|" << std::endl
+              << "|   #    #    # #    #    #      #    #  ####  #####   # |" << std::endl
+              << "|   #    #    # #    #    #      #    #      # #         |" << std::endl
+              << "|   #    #    # #    #    #      #    # #    # #      ###|" << std::endl
+              << "|   #     ####   ####     ######  ####   ####  ###### ###|" << std::endl
+              << "----------------------------------------------------------" << std::endl;
 }
 
 void WinScreen()
 {
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << "|#     #                  #     #          ### |" << std::endl;
-    std::cout << "| #   #   ####  #    #    #  #  # # #    # ### |" << std::endl;
-    std::cout << "|  # #   #    # #    #    #  #  # # ##   # ### |" << std::endl;
-    std::cout << "|   #    #    # #    #    #  #  # # # #  #  #  |" << std::endl;
-    std::cout << "|   #    #    # #    #    #  #  # # #  # #     |" << std::endl;
-    std::cout << "|   #    #    # #    #    #  #  # # #   ## ### |" << std::endl;
-    std::cout << "|   #     ####   ####      ## ##  # #    # ### |" << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
+    std::cout << "------------------------------------------------" << std::endl
+              << "|#     #                  #     #          ### |" << std::endl
+              << "| #   #   ####  #    #    #  #  # # #    # ### |" << std::endl
+              << "|  # #   #    # #    #    #  #  # # ##   # ### |" << std::endl
+              << "|   #    #    # #    #    #  #  # # # #  #  #  |" << std::endl
+              << "|   #    #    # #    #    #  #  # # #  # #     |" << std::endl
+              << "|   #    #    # #    #    #  #  # # #   ## ### |" << std::endl
+              << "|   #     ####   ####      ## ##  # #    # ### |" << std::endl
+              << "------------------------------------------------" << std::endl;
 }
 
 int SmallTimer()
@@ -100,7 +100,7 @@ void ShowRules()
               << "# >Your job is to input only one letter at a time and try to guess the word #" << std::endl
               << "# >    Do it right and you might survive                                    #" << std::endl
               << "# >Understood?                                                              #" << std::endl;
-    Sleep(20000); //minor tweaks needed for accuracy and Qol; alsop sleep is in milliseconds
+    system("pause");
     std::cout << "# >Good!                                                                    #" << std::endl
               << "# >                   Now, Let the game begin!                              #" << std::endl
               << "#############################################################################" << std::endl;
@@ -207,20 +207,87 @@ void BeginPlay() //main game loop
     }
 }
 
+void DisplayMenu()
+{
+    std::cout << "#############################################################################" << std::endl
+              << "#                             MENU                                          #" << std::endl
+              << "# 1. Game mode                                                              #" << std::endl
+              << "# 2. HighScore                                                              #" << std::endl
+              << "# 3. Exit                                                                   #" << std::endl
+              << "#############################################################################" << std::endl;
+    unsigned int PlayerChoice;
+
+    //will check if the choice is valid
+    do
+    {
+        std::cout << "Chose an option: ";
+        std::cin >> PlayerChoice;
+        if (PlayerChoice > 3 || PlayerChoice < 0)
+            std::cout << "Invalid choice! Please choose again!" << std::endl;
+        else
+        {
+            switch (PlayerChoice)
+            {
+            case 1:
+                system("cls");
+                std::cout << "#############################################################################" << std::endl
+                          << "#                           GAME MODES                                      #" << std::endl
+                          << "# 1. Classic                                                                #" << std::endl
+                          << "# 2. Endless                                                                #" << std::endl
+                          << "# 3. Back to main                                                           #" << std::endl
+                          << "#############################################################################" << std::endl;
+                do
+                {
+                    std::cout << "Chose an option: ";
+                    std::cin >> PlayerChoice;
+                    if (PlayerChoice > 3 || PlayerChoice < 0)
+                        std::cout << "Invalid choice! Please choose again!" << std::endl;
+                    else
+                    {
+                        switch (PlayerChoice)
+                        {
+                        case 1:
+                            std::cout << std::endl;
+                            system("cls");
+                            ShowRules();
+                            system("pause");
+                            std::cout << std::endl;
+                            SmallTimer();
+                            system("cls");
+                            BeginPlay();
+                            SmallTimer();
+                            system("cls");
+                            TitleDropEnd();
+                            break;
+                        }
+                    }
+                } while (PlayerChoice > 3 || PlayerChoice < 0);
+                break;
+            case 2:
+                system("cls");
+                std::cout << "#############################################################################" << std::endl
+                          << "#                           HIGHSCORES                                      #" << std::endl
+                          << "#                                                                           #" << std::endl
+                          << "#                           COMING SOON                                     #" << std::endl
+                          << "#                                                                           #" << std::endl
+                          << "#############################################################################" << std::endl;
+                break;
+            case 3:
+                system("cls");
+                break;
+            default:
+                std::cout << "\nInvalid option!";
+                break;
+            }
+        }
+    } while (PlayerChoice > 3 || PlayerChoice < 0);
+}
+
 int main()
 {
     TitleDropBegin();
     Sleep(500);
     SmallTimer();
-    std::cout << std::endl;
     system("cls");
-    ShowRules();
-    Sleep(5000);
-    std::cout << std::endl;
-    SmallTimer();
-    system("cls");
-    BeginPlay();
-    SmallTimer();
-    system("cls");
-    TitleDropEnd();
+    DisplayMenu();
 }
