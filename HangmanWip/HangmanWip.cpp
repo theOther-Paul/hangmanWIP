@@ -8,11 +8,9 @@
 #include <windows.h>
 #include <string.h> //i don't think i need both string and string.h, but i'm keeping it anyway
 
-//global variables
+// global variables
 std::string TemporaryStrMemo;
 std::string CorrectStrMemo;
-int PlayedLoops = 1;
-
 void TitleDropBegin()
 {
     std::cout << "    _                                                                                    " << std::endl
@@ -80,7 +78,7 @@ void WinScreen()
 
 int SmallTimer()
 {
-    int counter = 5; //amount of seconds
+    int counter = 5; // amount of seconds
     Sleep(1000);
     while (counter >= 1)
     {
@@ -107,53 +105,58 @@ void ShowRules()
               << "#############################################################################" << std::endl;
 }
 
-void GetValidWord() //will get a random word from the word file
+void GetValidWord() // will get a random word from the word file
 {
-    std::ifstream WordsFile;     //declaration of the input file
-    WordsFile.open("words.txt"); //opening procedure
+    std::ifstream WordsFile;     // declaration of the input file
+    WordsFile.open("words.txt"); // opening procedure
     std::string WordsContent;
-    std::vector<std::string> WordsFileData; //will store the contents of the words file
+    std::vector<std::string> WordsFileData; // will store the contents of the words file
     if (WordsFile.is_open())
     {
         while (WordsFile >> WordsContent)
         {
-            WordsFileData.push_back(WordsContent); //optimisation purposes and overall a good practice
+            WordsFileData.push_back(WordsContent); // optimisation purposes and overall a good practice
         }
     }
 
     else
-        std::cout << "Error! File is inexistent or broken. Please make sure that you have the uncorrupted file to continue."; //will print out an error message if the file is missing or the file is broken in some way
+        std::cout << "Error! File is inexistent or broken. Please make sure that you have the uncorrupted file to continue."; // will print out an error message if the file is missing or the file is broken in some way
 
     WordsFile.close();
 
-    //picking a random word from the file
+    // picking a random word from the file
     srand(time(0));
     int ValidWordPosition = rand() % WordsFileData.size();
     std::string ValidWord;
     ValidWord = WordsFileData[ValidWordPosition];
-    CorrectStrMemo = ValidWord; //memorizes the valid word to be used in the BeginPlay function and for testing purposes
+    CorrectStrMemo = ValidWord; // memorizes the valid word to be used in the BeginPlay function and for testing purposes
 
-    //mask operation
-    for (int i = 1; i < ValidWord.length() - 1; i++) //will show only the first and the last letters of the word
+    // mask operation
+    for (int i = 1; i < ValidWord.length() - 1; i++) // will show only the first and the last letters of the word
     {
         ValidWord[i] = '-';
     }
 
-    TemporaryStrMemo = ValidWord; //memorizes the masked word to be used in the BeginPlay() function
+    TemporaryStrMemo = ValidWord; // memorizes the masked word to be used in the BeginPlay() function
 }
 
-void BeginPlay() //main game loop
+int GetLives(std::string str)
+{
+    int Lives = 0;
+    if (str.length() < 4)
+        return Lives = 5;
+    else
+        return Lives = str.length() / 2 + 3;
+}
+
+void BeginPlay() // main game loop
 {
     std::string WordToGuess;
     GetValidWord();
     WordToGuess = TemporaryStrMemo;
     std::cout << WordToGuess << std::endl;
 
-    int lives;
-    if (WordToGuess.length() < 4)
-        lives = 5;
-    else
-        lives = WordToGuess.length() / 2 + 3;
+    int lives = GetLives(WordToGuess);
     std::cout << "\nYou have " << lives << " lives!";
 
     char UserGuess;
@@ -162,7 +165,7 @@ void BeginPlay() //main game loop
     {
         std::cout << "\nGuess the letter : ";
         std::cin >> UserGuess;
-        bool correct = false; //the introduction of a bool variable helps in breaking the loops and assuring the correct behaviour of the program
+        bool correct = false; // the introduction of a bool variable helps in breaking the loops and assuring the correct behaviour of the program
         for (size_t i = 1; i < CorrectStrMemo.length() - 1; i++)
         {
             if (CorrectStrMemo[i] == UserGuess)
@@ -185,7 +188,7 @@ void BeginPlay() //main game loop
             std::cout << " " << WordToGuess;
         }
 
-        //conditions to break the while and display the end screeens
+        // conditions to break the while and display the end screeens
         if (WordToGuess == CorrectStrMemo && lives > 0)
         {
             std::cout << std::endl
@@ -208,161 +211,14 @@ void BeginPlay() //main game loop
     }
 }
 
-//endless mode implementation function
+// endless mode implementation function
 void BeginEndlessPlay()
 {
-    std::string WordToGuess;
-    GetValidWord();
-    WordToGuess = TemporaryStrMemo;
-    std::cout << WordToGuess << std::endl;
-    std::cout << "(" << CorrectStrMemo << ")" << std::endl; //the correct word is displayed for testing purposes
-    int lives;
-    if (PlayedLoops == 1) //more word needed to perfect the loop from bugging or crashing
-    {
-
-        //int lives;
-
-        if (WordToGuess.length() < 4)
-            lives = 5;
-        else
-            lives = WordToGuess.length() / 2 + 3;
-        std::cout << "\nYou have " << lives << " lives!";
-
-        char UserGuess;
-
-        while (lives > 0 && WordToGuess != CorrectStrMemo)
-        {
-            std::cout << "\nGuess the letter : ";
-            std::cin >> UserGuess;
-            bool correct = false; //the introduction of a bool variable helps in breaking the loops and assuring the correct behaviour of the program
-            for (size_t i = 1; i < CorrectStrMemo.length() - 1; i++)
-            {
-                if (CorrectStrMemo[i] == UserGuess)
-                {
-                    correct = true;
-                    WordToGuess[i] = UserGuess;
-                }
-            }
-            if (correct)
-            {
-                std::cout << "\nCorrect guess! Keep going!";
-                std::cout << "\nUpdated word is: " << WordToGuess;
-                std::cout << "\nLives remaining: " << lives;
-            }
-            else
-            {
-                std::cout << "\nIncorrect guess!" << std::endl;
-                lives--;
-                std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
-                std::cout << " " << WordToGuess;
-            }
-
-            //conditions to break the while and display the end screeens
-            if (WordToGuess == CorrectStrMemo && lives > 0)
-            {
-                std::cout << std::endl
-                          << "You won!";
-                std::cout << "\n Do you wish to continue? (y/n) " << std::endl;
-                std::cout << "\n"
-                          << lives << std::endl;
-                char Chose;
-                std::cout << " ";
-                std::cin >> Chose;
-                if (Chose == 'y')
-                {
-                    PlayedLoops++;
-
-                    //preparations for next iteration: emptying the main string to be able to continue to play
-                    system("cls");
-                    WordToGuess.clear();
-                    BeginEndlessPlay();
-                }
-                else if (Chose == 'n')
-                    break;
-                else
-                    break;
-            }
-
-            //no lives left conditions to break
-            else if (lives == 0)
-            {
-                std::cout << "\nYou have no lives left to play!" << std::endl
-                          << "\nThe game is over!";
-                std::cout << "\nThe word was " << CorrectStrMemo;
-                Sleep(5000);
-                system("cls");
-                LoseScreen();
-                break;
-            }
-        }
-    }
-
-    else //there is a bug that overwrites the main string and has bad returns, making the loop unplayable
-    {
-        int newlives = lives;
-        char UserGuess;
-
-        while (newlives > 0 && WordToGuess != CorrectStrMemo)
-        {
-            std::cout << "\nGuess the letter : ";
-            std::cin >> UserGuess;
-            bool correct = false; //the introduction of a bool variable helps in breaking the loops and assuring the correct behaviour of the program
-            for (size_t i = 1; i < CorrectStrMemo.length() - 1; i++)
-            {
-                if (CorrectStrMemo[i] == UserGuess)
-                {
-                    correct = true;
-                    WordToGuess[i] = UserGuess;
-                }
-            }
-            if (correct)
-            {
-                std::cout << "\nCorrect guess! Keep going!";
-                std::cout << "\nUpdated word is: " << WordToGuess;
-                std::cout << "\nlives remaining: " << newlives;
-            }
-            else
-            {
-                std::cout << "\nIncorrect guess!" << std::endl;
-                newlives--;
-                std::cout << newlives << " newlives remaining. Use them wisely!" << std::endl;
-                std::cout << " " << WordToGuess;
-            }
-
-            //conditions to break the while and display the end screeens
-            if (WordToGuess == CorrectStrMemo && newlives > 0)
-            {
-                std::cout << std::endl
-                          << "You won!";
-                std::cout << "\n Do you wish to continue? (y/n) " << std::endl;
-                std::cout << "\n"
-                          << newlives << std::endl;
-                char Chose;
-                std::cout << " ";
-                std::cin >> Chose;
-                if (Chose == 'y')
-                {
-                    PlayedLoops++;
-                    system("cls");
-                    BeginEndlessPlay();
-                }
-                else if (Chose == 'n')
-                    break;
-                else
-                    break;
-            }
-            else if (newlives == 0)
-            {
-                std::cout << "\nYou have no lives left to play!" << std::endl
-                          << "\nThe game is over!";
-                std::cout << "\nThe word was " << CorrectStrMemo;
-                Sleep(5000);
-                system("cls");
-                LoseScreen();
-                break;
-            }
-        }
-    }
+    int PlayedLoops = 1;
+    system("cls");
+    std::cout << "\nRound " << PlayedLoops << std::endl;
+    BeginPlay();
+    PlayedLoops++;
 }
 
 void DisplayMenu()
@@ -375,7 +231,7 @@ void DisplayMenu()
               << "#############################################################################" << std::endl;
     unsigned int PlayerChoice;
 
-    //will check if the choice is valid
+    // will check if the choice is valid
     do
     {
         std::cout << "Chose an option: ";
@@ -417,6 +273,8 @@ void DisplayMenu()
                             system("cls");
                             TitleDropEnd();
                             break;
+
+                        // endless mode option
                         case 2:
                             std::cout << std::endl;
                             system("cls");
@@ -463,6 +321,6 @@ int main()
     Sleep(500);
     SmallTimer();
     system("cls");
-    DisplayMenu();
-    //BeginEndlessPlay();
+    DisplayMenu(); 
+    // BeginEndlessPlay();
 }
