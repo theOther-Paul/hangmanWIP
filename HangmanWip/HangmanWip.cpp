@@ -11,6 +11,7 @@
 // global variables
 std::string TemporaryStrMemo;
 std::string CorrectStrMemo;
+
 void TitleDropBegin()
 {
     std::cout << "    _                                                                                    " << std::endl
@@ -82,7 +83,7 @@ int SmallTimer()
     Sleep(1000);
     while (counter >= 1)
     {
-        std::cout << "\rThe game will begin in: " << counter << std::flush;
+        std::cout << "\rLoading: " << counter << std::flush;
         Sleep(1000);
         counter--;
     }
@@ -192,7 +193,7 @@ void BeginPlay() // main game loop
         if (WordToGuess == CorrectStrMemo && lives > 0)
         {
             std::cout << std::endl
-                      << "You won!";
+                      << "\nYou won!";
             Sleep(5000);
             system("cls");
             WinScreen();
@@ -214,11 +215,38 @@ void BeginPlay() // main game loop
 // endless mode implementation function
 void BeginEndlessPlay()
 {
+
     int PlayedLoops = 1;
-    system("cls");
     std::cout << "\nRound " << PlayedLoops << std::endl;
     BeginPlay();
     PlayedLoops++;
+    std::cout << "Do you wish to continue playing?(y/n)" << std::endl;
+    char Choice;
+    // checking choice validity
+    do
+    {
+        std::cout << "\nInput your choice: ";
+        std::cin >> Choice;
+        tolower(Choice);
+        if (Choice == 'y')
+        {
+            PlayedLoops++;
+            system("cls");
+            std::cout << "\nRound " << PlayedLoops << std::endl;
+            BeginPlay();
+        }
+
+        else if (Choice == 'n')
+        {
+            system("cls");
+            std::cout << "\nHope you had fun!" << std::endl;
+            TitleDropEnd();
+            break;
+        }
+
+        else
+            break;
+    } while (Choice != 'y' || Choice != 'n');
 }
 
 void DisplayMenu()
@@ -317,10 +345,10 @@ void DisplayMenu()
 
 int main()
 {
+    system("cls");
     TitleDropBegin();
     Sleep(500);
     SmallTimer();
     system("cls");
-    DisplayMenu(); 
-    // BeginEndlessPlay();
+    DisplayMenu();
 }
