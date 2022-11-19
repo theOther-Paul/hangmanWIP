@@ -6,11 +6,17 @@
 #include <ctime>
 #include <chrono>
 #include <windows.h>
-#include <string.h> //i don't think i need both string and string.h, but i'm keeping it anyway
+#include <string.h> //i don't think i need both string and string.h, but I'm keeping it anyway
+#include "TextTable.h"
+
+// global variables
 
 std::string TemporaryStrMemo;
 std::string CorrectStrMemo;
 int TopScore;
+int PlayedLoops = 1;
+
+// function declarations
 
 void TitleDropBegin()
 {
@@ -108,21 +114,23 @@ void ShowRules()
 
 void GetValidWord() // will get a random word from the word file
 {
-    std::ifstream WordsFile;     // declaration of the input file
-    WordsFile.open("words.txt"); // opening procedure
+    std::ifstream WordsFile;        // declaration of the input file
+    WordsFile.open(R"(words.txt)"); // opening procedure
     std::string WordsContent;
     std::vector<std::string> WordsFileData; // will store the contents of the words file
     if (WordsFile.is_open())
     {
         while (WordsFile >> WordsContent)
         {
-            WordsFileData.push_back(WordsContent); // optimisation purposes and overall a good practice
+            WordsFileData.push_back(WordsContent); // optimization purposes and overall a good practice
         }
     }
 
     else
+    {
         std::cout << "Error! File is inexistent or broken. Please make sure that you have the uncorrupted file to continue."; // will print out an error message if the file is missing or the file is broken in some way
-
+        Sleep(5);
+    }
     WordsFile.close();
 
     // picking a random word from the file
@@ -174,7 +182,7 @@ int PossibleScore(std::string str)
         else if (str[i] == 'k')
             score += 46;
         else if (str[i] == 'v')
-            score += 46;
+            score += 47;
         else if (str[i] == 'x' || str[i] == 'z' || str[i] == 'j')
             score += 50;
         else if (str[i] == 'q')
@@ -186,19 +194,23 @@ int PossibleScore(std::string str)
     return score;
 }
 
-void WriteScore()
+void WriteScore(int scoreVar)
 {
     std::ofstream Scores;
-    Scores.open("scores.txt");
+
+    Scores.open("scores.txt", std::ios_base::app);
     if (!Scores)
     {
         std::cout << "Error in creating the output file!";
     }
+
     else
-        std::cout << "File created successfully!";
-    std::cout << "Score: ";
-    Scores << TopScore;
-    Scores.close();
+    {
+        std::cout << "New Score: " << scoreVar << std::endl; // for testing purposes
+        Scores << "\n"
+               << scoreVar;
+        Scores.close();
+    }
 }
 
 void BeginPlay() // main game loop
@@ -234,31 +246,34 @@ void BeginPlay() // main game loop
             std::cout << "\nCorrect guess! Keep going!";
             std::cout << "\nUpdated word is: " << WordToGuess;
             std::cout << "\nLives remaining: " << lives;
-            std::cout << "\nHighScore: " << HighScore;
+            std::string UserGuessString(sizeof(UserGuess), UserGuess); // convert the user choice to a string with the length of 1 and the user input value
+            HighScore += PossibleScore(UserGuessString);
+            std::cout << "\nCurrent Score: " << HighScore;
         }
         else
         {
             std::cout << "\nIncorrect guess!" << std::endl;
             lives--;
             std::cout << lives << " lives remaining. Use them wisely!" << std::endl;
-            std::cout << " " << WordToGuess;
+            std::cout << WordToGuess;
 
-            // highscore calculations
+            // high score calculations
             // converted a character to a string using the std::string::append() function to paste the char at the end of an empty string of 1 dimension
             std::string ConvUserGuess;
             ConvUserGuess.append(1, UserGuess);
-            HighScore = PossibleScore(CorrectStrMemo) - PossibleScore(ConvUserGuess);
-            std::cout << "\nHighScore: " << HighScore;
+            HighScore = PossibleScore(CorrectStrMemo) - PossibleScore(ConvUserGuess); // contains the score that should be written at the end of the game if tha player wins
+            std::cout << "\nScore: " << HighScore;
         }
 
-        // conditions to break the while and display the end screeens
+        // conditions to break the while and display the end screens
         if (WordToGuess == CorrectStrMemo && lives > 0 && HighScore != 0)
         {
             std::cout << std::endl
                       << "\nYou won!"
                       << "\nYour Score was: " << HighScore << std::endl;
-            HighScore = TopScore;
-            WriteScore();
+            Sleep(3);
+            WriteScore(HighScore);
+            // TopScore += HighScore; // might be helpful for the endless mode
             Sleep(5000);
             system("cls");
             WinScreen();
@@ -278,70 +293,85 @@ void BeginPlay() // main game loop
 }
 
 // endless mode implementation function
-void BeginEndlessPlay()
+void BeginEndlessPlay(int PlayedLoops)
 {
 
-    int PlayedLoops = 1;
     std::cout << "\nRound " << PlayedLoops << std::endl;
     BeginPlay();
     PlayedLoops++;
     std::cout << "Do you wish to continue playing?(y/n)" << std::endl;
-    char Choice;
+    char midChoice;
     // checking choice validity
     do
     {
         std::cout << "\nInput your choice: ";
-        std::cin >> Choice;
-        tolower(Choice);
-        if (Choice == 'y')
+        // char midChoice;
+        std::cin >> midChoice;
+        midChoice -= 32;
+        if (midChoice == 'y' || midChoice == 'Y')
         {
-            PlayedLoops++;
-            system("cls");
-            std::cout << "\nRound " << PlayedLoops << std::endl;
-            BeginPlay();
+            BeginEndlessPlay(PlayedLoops);
         }
 
-        else if (Choice == 'n')
+        else if (midChoice == 'n' || midChoice == 'N')
         {
             system("cls");
-            DisplayMenu();
         }
-
         else
-            break;
-    } while (Choice != 'y' || Choice != 'n');
+            std::cout << "Invalid choice: " << midChoice;
+    } while (midChoice != 'y' || midChoice != 'n');
 }
 
 void DisplayMenu()
 {
-    std::cout << "#############################################################################" << std::endl
-              << "#                             MENU                                          #" << std::endl
-              << "# 1. Game mode                                                              #" << std::endl
-              << "# 2. HighScore                                                              #" << std::endl
-              << "# 3. Exit                                                                   #" << std::endl
-              << "#############################################################################" << std::endl;
+    TextTable mm('-', '|', '+');
+    mm.add("");
+    mm.add("Menu");
+    mm.endOfRow();
+    mm.add("1");
+    mm.add("Game Mode");
+    mm.endOfRow();
+    mm.add("2");
+    mm.add("Scores");
+    mm.endOfRow();
+    mm.add("3");
+    mm.add("Exit");
+    mm.endOfRow();
+    mm.setAlignment(2, TextTable::Alignment::RIGHT);
+    std::cout << mm;
     unsigned int PlayerChoice;
     std::ifstream Score;
-    int message;
     // will check if the choice is valid
     do
     {
         std::cout << "Chose an option: ";
         std::cin >> PlayerChoice;
-        if (PlayerChoice > 3 || PlayerChoice < 0)
+        if (PlayerChoice > 3 || PlayerChoice < 1)
             std::cout << "Invalid choice! Please choose again!" << std::endl;
+
         else
         {
             switch (PlayerChoice)
             {
             case 1:
+            {
                 system("cls");
-                std::cout << "#############################################################################" << std::endl
-                          << "#                           GAME MODES                                      #" << std::endl
-                          << "# 1. Classic                                                                #" << std::endl
-                          << "# 2. Endless                                                                #" << std::endl
-                          << "# 3. Back to main                                                           #" << std::endl
-                          << "#############################################################################" << std::endl;
+                // display the game mode
+                TextTable gm('-', '|', '+');
+                gm.add("");
+                gm.add("GAME MODES");
+                gm.endOfRow();
+                gm.add("1");
+                gm.add("Classic");
+                gm.endOfRow();
+                gm.add("2");
+                gm.add("Endless");
+                gm.endOfRow();
+                gm.add("3");
+                gm.add("Back");
+                gm.endOfRow();
+                gm.setAlignment(2, TextTable::Alignment::RIGHT);
+                std::cout << gm;
                 do
                 {
                     std::cout << "Chose an option: ";
@@ -352,6 +382,7 @@ void DisplayMenu()
                     {
                         switch (PlayerChoice)
                         {
+                            // main game loop
                         case 1:
                             std::cout << std::endl;
                             system("cls");
@@ -375,37 +406,71 @@ void DisplayMenu()
                             std::cout << std::endl;
                             SmallTimer();
                             system("cls");
-                            BeginEndlessPlay();
+                            BeginEndlessPlay(PlayedLoops);
                             SmallTimer();
                             system("cls");
                             TitleDropEnd();
                             break;
+
+                        // back to the main menu
                         case 3:
                             system("cls");
                             DisplayMenu();
                         }
                     }
-                } while (PlayerChoice > 3 || PlayerChoice < 0);
-                break;
-            case 2:
-                system("cls");
-                Score.open("scores.txt");
-                Score >> message;
-                std::cout << "#############################################################################" << std::endl
-                          << "#                           HIGHSCORES                                      #" << std::endl
-                          << "#                                                                           #" << std::endl
-                          << "# 1.\0\0\0\0\0\0\0\0\0\0\0\0                                                #" << message << std::endl
-                          << "#                                                                           #" << std::endl
-                          << "#############################################################################" << std::endl;
-                Score.close();
-                break;
-            case 3:
-                system("cls");
-                break;
-            default:
-                std::cout << "\nInvalid option!";
+                } while (PlayerChoice > 3 || PlayerChoice < 1);
                 break;
             }
+
+            // in the display menu 1st switch statement, display high score option
+            case 2:
+            {
+                system("cls");
+                Score.open("scores.txt");
+                std::vector<std::string> message;
+                std::string raw_message;
+
+                if (Score.is_open())
+                {
+                    while (Score >> raw_message)
+                    {
+                        message.push_back(raw_message);
+                    }
+                }
+
+                else
+                {
+                    std::cout << "Error! File is inexistent or broken. \nPlease make sure that you have the uncorrupted file to continue."; // will print out an error message if the file is missing or the file is broken in some way
+                    Sleep(3);
+                }
+
+                Score.close();
+
+                TextTable t('-', '|', '+'); // needs to be debugged
+                t.add("Positions");
+                t.add("Scores");
+                t.endOfRow();
+                for (int i = 0; i < message.size(); ++i)
+                {
+                    t.add(std::to_string(i));
+                    t.add(message[i]);
+                    t.endOfRow();
+                }
+                t.setAlignment(6, TextTable::Alignment::RIGHT);
+                std::cout << t;
+                Sleep(5000);
+                break;
+            }
+
+                // exit option case
+            case 3:
+            {
+                system("cls");
+                TitleDropEnd();
+                break;
+            }
+            }
         }
-    } while (PlayerChoice > 3 || PlayerChoice < 0);
+
+    } while (PlayerChoice > 3 || PlayerChoice < 1);
 }
